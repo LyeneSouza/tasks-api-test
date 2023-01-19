@@ -48,4 +48,26 @@ public class APITest {
             .body("message", is("Due date must not be in past"))
         ;
     }
+
+    @Test
+    public void deveRemoverTaskComSucesso() {
+        // Inserir task para poder remover
+        Integer id = given()
+            .body("{ \"task\": \"Teste teste\", \"dueDate\": \"2030-12-30\" }")
+            .contentType(ContentType.JSON)
+        .when()
+            .post("/todo")
+        .then()
+            .statusCode(201)
+            .extract().path("id")
+        ;
+
+        // Remover task
+        given()
+        .when()
+            .delete("/todo/" + id)
+        .then()
+            .statusCode(204)
+        ;
+    }
 }
